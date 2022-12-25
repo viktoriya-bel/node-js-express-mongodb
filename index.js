@@ -11,9 +11,13 @@ const app = express();
 
 //чтобы парсить json
 app.use(express.json());
+//подключение файла с маршрутизацией
 app.use('/api', router);
 
-//функция запуска сервера
+/**
+ * Метод запуска сервера
+ * @returns {Promise<void>}
+ */
 const start = async () => {
   try {
     //само подключение к бд
