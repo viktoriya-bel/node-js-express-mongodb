@@ -1,6 +1,7 @@
 //импорты
 const Role = require('./models/Role');
 const User = require('./models/User');
+const Completed = require('./models/Completed');
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const generateAccessToken = require('./utils/generateAccessToken');
@@ -56,6 +57,31 @@ class authController {
     } catch (error) {
       console.log(error);
       response.status(400).json({ message: 'Ошибка авторизации!' });
+    }
+  }
+
+  async completed(request, response){
+    try{
+      const { username, date_completed, block, time } = request.body;
+      const user = await User.findOne({ username });
+      if (!user) return response.status(400).json({ message: `Пользователь ${ username } не найден` });
+      const completed = new Completed({ username, date_completed, block, time });
+      completed.save();
+      return response.json({ message: "Данные записаны!" });
+    } catch (error) {
+      console.log(error);
+      response.status(400).json({ message: 'Ошибка!' });
+    }
+  }
+
+  async getCompleted(request, response){
+    try{
+      const { username } = request.query;
+      const completedArray = await Completed.find({ username });
+      return response.json(completedArray);
+    } catch (error) {
+      console.log(error);
+      response.status(400).json({ message: 'Ошибка!' });
     }
   }
 
