@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const router = require('./app/routers');
 
 //порт
-const PORT = 2356;
+const PORT = process.env.port || 2356;
 
 //создание сервера
 const app = express();
